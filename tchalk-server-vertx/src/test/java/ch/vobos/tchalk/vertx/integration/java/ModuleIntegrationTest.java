@@ -58,12 +58,6 @@ public class ModuleIntegrationTest extends TestVerticle {
 	});
     }
 
-    @Test
-    public void testSomethingElse() {
-	// Whatever
-	testComplete();
-    }
-
     @Override
     public void start() {
 	// Make sure we call initialize() - this sets up the assert stuff so
@@ -73,6 +67,7 @@ public class ModuleIntegrationTest extends TestVerticle {
 	// contain the name of the module so you
 	// don't have to hardecode it in your tests
 	String moduleName = System.getProperty("vertx.modulename");
+	System.out.println(moduleName);
 	container.deployModule(moduleName, new AsyncResultHandler<String>() {
 	    @Override
 	    public void handle(AsyncResult<String> asyncResult) {
