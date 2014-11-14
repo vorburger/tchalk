@@ -1,4 +1,5 @@
 package ch.vobos.tchalk.vertx.integration.java;
+
 /*
  * Copyright 2013 Red Hat, Inc.
  *
@@ -22,13 +23,13 @@ import org.vertx.testtools.VertxAssert;
 
 public class SomeVerticle extends Verticle {
 
-  public void start() {
-    VertxAssert.initialize(vertx);
+    public void start() {
+	VertxAssert.initialize(vertx);
 
-    // You can also assert from other verticles!!
-    VertxAssert.assertEquals("foo", "foo");
+	// You can also assert from other verticles!!
+	VertxAssert.assertEquals("foo", "foo");
 
-    // And complete tests from other verticles
-    VertxAssert.testComplete();
-  }
+	// And complete tests from other verticles
+	VertxAssert.testComplete();
+    }
 }
