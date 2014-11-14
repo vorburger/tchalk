@@ -16,7 +16,7 @@ public class NewYo {
 	
 	public final String text;
 	
-	public final Optional<YoID> replyTo;
+	public final Optional<@NonNull YoID> replyTo;
 
 	@SuppressWarnings("null")
 	public NewYo(Token from, Channel channel, String text) {
