@@ -14,3 +14,7 @@ target
 workspace
 *.class
 *~
+
+.idea
+*.iml
+mods
