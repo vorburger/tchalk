@@ -18,6 +18,11 @@ public class NewYo {
 	
 	public final Optional<YoID> replyTo;
 
+	@SuppressWarnings("null")
+	public NewYo(Token from, Channel channel, String text) {
+		this(from, channel, text, Optional.empty());
+	}
+	
 	public NewYo(Token from, Channel channel, String text, Optional<@NonNull YoID> replyTo) {
 		super();
 		this.from = from;
