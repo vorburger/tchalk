@@ -1,6 +1,10 @@
 
 Optional<T> and Jackson.. @see NewYo & JsonTest
 
+null argument checks.. needed EVEN IF Eclipse has null validation
+	because at runtime, from outside, you can still receive null..
+	example: UserServicesImpl had an NPE because Laurent say'd NewYo with with null 'from'
+
 ConversionService (like I already had it somewhere else once..)
 	search for, and replace, all occurences of Json., and new JsonObject(
 
