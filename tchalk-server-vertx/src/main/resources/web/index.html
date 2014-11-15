@@ -13,11 +13,11 @@
     $(function () {
         window.onhashchange = reset;
         $('#input').keydown(function (e) {
-            console.log(e);
-            if (e.keyCode === 13) {
-                console.log($(this));
-                var message = $(this).val();
-                eb.send('hello', message);
+            if (e.keyCode === 13 && $(this).val()) {
+                var msg = { "text": $(this).val(), "channel": channel }
+                console.log("Sending", msg);
+                eb.send('tchalk.server', msg);
+                $(this).val("");
             }
         });
         reset();
@@ -37,8 +37,8 @@
         eb.onopen = function () {
 
             eb.registerHandler('tchalk.channel:' + channel, function (message) {
-                var text = JSON.stringify(message);
-                console.log('received a message: ' + text);
+                console.log('received a message: ', message);
+                var text = message.text;
                 addLine(text);
             });
         }
@@ -49,7 +49,8 @@
 
     function addLine(messageText) {
         // TODO THIS IS NOT SAFE! Needs escaping..
-        $('#messages').append("<p>" + messageText);
+        $('#messages').append($("<p>").text(messageText));
+        $('#messagePane')[0].scrollTop = $('#messagePane')[0].scrollHeight;
     }
 
 </script>
@@ -60,16 +61,23 @@
         font-size: 14px;
     }
 
-    .center-pane {
-        position: fixed;
+    #messagePane {
+        position: absolute;
         top: 36px;
-        bottom: 30px;
+        bottom: 36px;
         right: 10px;
         left: 10px;
-        background: lemonchiffon;
+        overflow: auto;
+        vertical-align: bottom;
     }
 
-    .footer {
+    #messageContainer {
+        position: relative;
+        display: table-cell;
+        vertical-align: bottom;
+    }
+
+    #footer {
         position: fixed;
         height: 20px;
         left: 10px;
@@ -85,9 +93,13 @@
 
 <h2 id="channel">...</h2>
 
-<div id='messages' class="center-pane"></div>
+<div id='messagePane'>
+    <div id="messageContainer">
+        <div id="messages"></div>
+    </div>
+</div>
 
-<div class="footer">
+<div id="footer">
     <input id='input' type='text'>
 </div>
 
