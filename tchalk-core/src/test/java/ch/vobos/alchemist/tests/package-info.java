@@ -1,5 +1,5 @@
 @NonNullByDefault({ PARAMETER, RETURN_TYPE, FIELD, TYPE_PARAMETER /* ! */, TYPE_BOUND, TYPE_ARGUMENT, ARRAY_CONTENTS /* ! */})
-package ch.vobos.tchalk.core.domain.simpletypes;
+package ch.vobos.alchemist.tests;
 
 import static org.eclipse.jdt.annotation.DefaultLocation.ARRAY_CONTENTS;
 import static org.eclipse.jdt.annotation.DefaultLocation.FIELD;
