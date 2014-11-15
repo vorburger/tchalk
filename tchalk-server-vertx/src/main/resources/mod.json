@@ -1,6 +1,5 @@
 {
-  "main":"ch.vobos.tchalk.vertx.WebServerVerticle",
-
+  "main":"ch.vobos.tchalk.vertx.ServerVerticle",
   "description":"An amazing talk platform",
   "licenses": ["The Apache Software License Version 2.0"],
   "author": "Vobos",

@@ -15,6 +15,11 @@ import ch.vobos.tchalk.core.services.TchalkClientServices;
 import ch.vobos.tchalk.core.services.TchalkServerServices;
 import ch.vobos.tchalk.core.services.impl.TchalkServerServicesImpl;
 
+/**
+ * Test.
+ * 
+ * @see ServerIntegrationTest for a similar test (with Vert.x)
+ */
 public class TchalkServerServicesTest {
 
 	TestEventBus<Yo> testEventBus = new TestEventBus<>();
