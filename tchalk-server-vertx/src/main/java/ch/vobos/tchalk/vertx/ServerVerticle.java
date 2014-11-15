@@ -9,26 +9,22 @@ import org.vertx.java.platform.Verticle;
 
 import ch.vobos.tchalk.core.domain.NewYo;
 import ch.vobos.tchalk.core.services.TchalkServerServices;
+import ch.vobos.tchalk.core.services.impl.TchalkServerServicesImpl;
 
 public class ServerVerticle extends Verticle {
 
     public static final String TCHALK_SERVER = "tchalk.server";
     
-    private final TchalkServerServices server;
-    
-    public ServerVerticle(TchalkServerServices server) {
-	super();
-	this.server = server;
-    }
-
     public void start() {
-	vertx.eventBus().registerHandler(TCHALK_SERVER, (Message<JsonObject> m) -> {
-	    JsonObject json = m.body();
+	TchalkServerServices tchalkServer = new TchalkServerServicesImpl(new VertxEventBus(vertx));
+
+	vertx.eventBus().registerHandler(TCHALK_SERVER, (Message<String> m) -> {
+	    String json = m.body();
 	    // TODO distinguish say and invite messages
-	    NewYo newYo = Json.decodeValue(json.encode(), NewYo.class);
+	    NewYo newYo = Json.decodeValue(json, NewYo.class);
 	    
 	    try {
-		server.say(newYo, yoID -> {
+		tchalkServer.say(newYo, yoID -> {
 		    // TODO this isn't great.. 'value' should be automatic, toString() shouldn't be needed..
 		    String jsonString = new JsonObject().putString("value", yoID.toString()).toString();
 		    m.reply(jsonString); 
@@ -41,12 +37,12 @@ public class ServerVerticle extends Verticle {
 	    
 	});
 	
-	HttpServer server = vertx.createHttpServer();
+	HttpServer httpServer = vertx.createHttpServer();
 	JsonObject config = new JsonObject().putString("prefix", "/eventbus");
 	JsonArray noPermitted = new JsonArray();
 	noPermitted.add(new JsonObject());
-	vertx.createSockJSServer(server).bridge(config, noPermitted, noPermitted);
-	server.listen(8080);
+	vertx.createSockJSServer(httpServer).bridge(config, noPermitted, noPermitted);
+	httpServer.listen(8080);
     }
     
 }

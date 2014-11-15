@@ -51,6 +51,7 @@ public class ServerIntegrationTest extends TestVerticle {
 	vertx.eventBus().send(ServerVerticle.TCHALK_SERVER, Json.encode(newYo), 
 		(Message<JsonObject> m) -> { yoIdFuture.complete(new YoID(m.body().getString("value"))); } );
 
+	yoIdFuture.get();
 	assertEquals("hello, world", receiver1.get().text);
 	// TODO assertEquals("hello, world", receiver2.get().text);
 	// TODO assertEquals more stuff.. like yoId.get().toString());
@@ -78,7 +79,8 @@ public class ServerIntegrationTest extends TestVerticle {
 	    public void handle(AsyncResult<String> asyncResult) {
 		// Deployment is asynchronous and this this handler will
 		// be called when it's complete (or failed)
-		assertTrue(asyncResult.succeeded());
+		String msg = asyncResult.cause() != null ? asyncResult.cause().toString() : "Not succeeded, but no cause?!";
+		assertTrue(msg, asyncResult.succeeded());
 		assertNotNull("deploymentID should not be null", asyncResult.result());
 		// If deployed correctly then start the tests!
 		startTests();

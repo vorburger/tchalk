@@ -45,7 +45,7 @@ public abstract class StringValueType implements java.io.Serializable, Comparabl
 
 	@Override
 	public boolean equals(@Nullable Object obj) {
-		return obj != null && getClass() == obj.getClass() && string.equals(obj);
+		return obj != null && getClass() == obj.getClass() && string.equals(obj.toString());
 //		if (this == obj)
 //			return true;
 //		if (obj == null)
