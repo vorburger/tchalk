@@ -14,7 +14,7 @@
         window.onhashchange = reset;
         $('#input').keydown(function (e) {
             if (e.keyCode === 13 && $(this).val()) {
-                var msg = { "text": $(this).val(), "channel": channel }
+                var msg = { "text": $(this).val(), "channel": channel, "from": $("#name").val() }
                 console.log("Sending", msg);
                 eb.send('tchalk.server', msg);
                 $(this).val("");
@@ -32,13 +32,13 @@
         if (eb) {
             eb.close();
         }
-        eb = new vertx.EventBus('http://localhost:8080/eventbus');
+        eb = new vertx.EventBus('/eventbus');
 
         eb.onopen = function () {
 
             eb.registerHandler('tchalk.channel:' + channel, function (message) {
                 console.log('received a message: ', message);
-                var text = message.text;
+                var text = message.userPublicProfile.humanName + ": " + message.text;
                 addLine(text);
             });
         }
@@ -63,7 +63,7 @@
 
     #messagePane {
         position: absolute;
-        top: 36px;
+        top: 80px;
         bottom: 36px;
         right: 10px;
         left: 10px;
@@ -92,7 +92,7 @@
 </style>
 
 <h2 id="channel">...</h2>
-
+Name <input type="text" id="name">
 <div id='messagePane'>
     <div id="messageContainer">
         <div id="messages"></div>
