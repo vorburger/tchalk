@@ -6,6 +6,7 @@ import static org.vertx.testtools.VertxAssert.assertTrue;
 import static org.vertx.testtools.VertxAssert.testComplete;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.vertx.java.core.AsyncResult;
@@ -48,13 +49,15 @@ public class ServerIntegrationTest extends TestVerticle {
 	NewYo newYo = new NewYo(fromToken, testChannel, "hello, world");
 
 	CompletableFuture<YoID> yoIdFuture = new CompletableFuture<>();
-	vertx.eventBus().send(ServerVerticle.TCHALK_SERVER, Json.encode(newYo), 
+	vertx.eventBus().send(ServerVerticle.TCHALK_SERVER, new JsonObject(Json.encode(newYo)),
 		(Message<JsonObject> m) -> { yoIdFuture.complete(new YoID(m.body().getString("value"))); } );
 
-	yoIdFuture.get();
-	assertEquals("hello, world", receiver1.get().text);
-	// TODO assertEquals("hello, world", receiver2.get().text);
-	// TODO assertEquals more stuff.. like yoId.get().toString());
+// TODO no response??
+	yoIdFuture.get(3, TimeUnit.SECONDS);
+
+	assertEquals("hello, world", receiver1.get(3, TimeUnit.SECONDS).text);
+	// TODO assertEquals("hello, world", receiver2.get(3, TimeUnit.SECONDS).text);
+	// TODO assertEquals more stuff.. like yoId.get(3, TimeUnit.SECONDS).toString());
 	
 	/*
 	 * If we get here, the test is complete. You must always call `testComplete()` at the end. Remember that testing is

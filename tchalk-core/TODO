@@ -1,5 +1,8 @@
 
-hashCode & equals and JSON fix for ALL VOs (not just NewYo)
+Optional<T> and Jackson.. @see NewYo & JsonTest
+
+ConversionService (like I already had it somewhere else once..)
+	search for, and replace, all occurences of Json., and new JsonObject(
 
 remaining services
 
@@ -7,6 +10,8 @@ FindBugs Maven plug-in
 
 FindBugs @Immutable
 
-Bloody Vertx how to use in-IDE to run integration tests and start server, with clustering, without build
+ran on Vertx mailing list re. how to use in-IDE to run integration tests and start server, with clustering, without build
+
+propose PR to Vertx for auto-converting Object to/from JsonObject
 
 Null Analysis in IDEA

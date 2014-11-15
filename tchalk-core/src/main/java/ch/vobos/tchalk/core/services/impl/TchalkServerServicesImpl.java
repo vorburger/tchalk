@@ -54,12 +54,12 @@ public class TchalkServerServicesImpl implements TchalkServerServices {
 		// TODO validate yo.from token
 
 		Channel channel;
-		if (!invite.channel.isPresent()) {
+// TODO	if (!invite.channel.isPresent()) {
 			channel = new Channel(uuid.newUUID());
-		} else {
-			// TODO must first verify here that invite.from actually has access to this Channel!
-			channel = invite.channel.get();
-		}
+// TODO	} else {
+//			// TODO must first verify here that invite.from actually has access to this Channel!
+//			channel = invite.channel.get();
+//		}
 		
 		// TODO invite.userPublicID ... ask user if he wants to participate.. WTF??
 		
