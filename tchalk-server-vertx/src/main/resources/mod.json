@@ -1,18 +1,12 @@
 {
+  "main":"ch.vobos.tchalk.vertx.WebServerVerticle",
 
-  // Java verticle
-  "main":"ch.vobos.tchalk.vertx.PingVerticle",
-
-  // If your module is going to be registered in the Vert.x module registry you will also need the following
-  // mandatory fields
-  "description":"Put description of your module here",
+  "description":"An amazing talk platform",
   "licenses": ["The Apache Software License Version 2.0"],
-  "author": "Joe Bloggs",
-
-  // Optional fields
-  "developers": ["Other Dev 1", "Other Dev 2"],
-  "keywords": ["gerbils", "cars", "cheese", "chocolate", "underpants", "herring"],
-  "homepage": "url to your project page",
+  "author": "Vobos",
+  "developers": ["Vo", "bo", "os"],
+  "keywords": ["talk", "chat", "chitchat", "babil"],
+  "homepage": "github, I think",
 
   "auto-redeploy": true
 }

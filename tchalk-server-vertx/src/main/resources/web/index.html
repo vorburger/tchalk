@@ -1,0 +1,94 @@
+<html>
+<head>
+    <script src="sockjs-0.3.4.min.js"></script>
+    <script src='vertxbus-2.1.js'></script>
+    <script src='jquery-1.9.1.min.js'></script>
+</head>
+
+<script>
+
+    var channel;
+    var eb;
+
+    $(function () {
+        window.onhashchange = reset;
+        $('#input').keydown(function (e) {
+            console.log(e);
+            if (e.keyCode === 13) {
+                console.log($(this));
+                var message = $(this).val();
+                eb.send('hello', message);
+            }
+        });
+        reset();
+    });
+
+    function reset() {
+        channel = window.location.hash.replace("#", "");
+        if (!channel) {
+            channel = window.location.hostname + "_" + window.location.port + "_" + window.location.pathname;
+        }
+        $("#channel").text(channel);
+        if (eb) {
+            eb.close();
+        }
+        eb = new vertx.EventBus('http://localhost:8080/eventbus');
+
+        eb.onopen = function () {
+
+            eb.registerHandler('tchalk.channel:' + channel, function (message) {
+                var text = JSON.stringify(message);
+                console.log('received a message: ' + text);
+                addLine(text);
+            });
+        }
+
+        $("#messages").empty();
+        $("#input").focus();
+    }
+
+    function addLine(messageText) {
+        // TODO THIS IS NOT SAFE! Needs escaping..
+        $('#messages').append("<p>" + messageText);
+    }
+
+</script>
+
+<style>
+    body {
+        font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
+        font-size: 14px;
+    }
+
+    .center-pane {
+        position: fixed;
+        top: 36px;
+        bottom: 30px;
+        right: 10px;
+        left: 10px;
+        background: lemonchiffon;
+    }
+
+    .footer {
+        position: fixed;
+        height: 20px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+    }
+
+    #input {
+        width: 100%;
+        font-size: 120%;
+    }
+</style>
+
+<h2 id="channel">...</h2>
+
+<div id='messages' class="center-pane"></div>
+
+<div class="footer">
+    <input id='input' type='text'>
+</div>
+
+</html>
