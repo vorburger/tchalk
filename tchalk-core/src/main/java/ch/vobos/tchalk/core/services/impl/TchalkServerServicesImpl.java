@@ -43,7 +43,7 @@ public class TchalkServerServicesImpl implements TchalkServerServices {
 		UserPublicProfile userPublicProfile = userPublicProfileFuture.get();
 
 		Timestamp ts = new Timestamp("TODO");
-		Yo outYo = new Yo(id, userPublicProfile, inYo.channel, inYo.text, ts, inYo.replyTo);
+		Yo outYo = new Yo(id, userPublicProfile, inYo.channel, inYo.text, ts /*, inYo.replyTo */);
 		yoBus.publish(outYo);
 		
 		callback.accept(id);

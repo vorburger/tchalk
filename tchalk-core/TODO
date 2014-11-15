@@ -1,4 +1,6 @@
 
+hashCode & equals and JSON fix for ALL VOs (not just NewYo)
+
 remaining services
 
 FindBugs Maven plug-in
