@@ -1,4 +1,34 @@
 
+OAuth (Michael)
+
+UI (Laurent)
+
+build root pom.xml (Laurent?)
+incl. Vertx Maven plugin launcher.. 'mvn -o vertx:runMod' ? init? pullInDeps? (Michael?)
+incl. root README.txt set-up instructions
+
+PAAs, Travis
+
+ChatBot API (Michael)
+
+SECURITY WebServer review noPermitted to disallow clients posting broadcast Yo to bus themselves
+
+Android App wrapper with Cordova
+
+Embeddable Widget, plus documentation, homepage..
+
+Embeddable Widget hosted page URL sent to server, tracked on server
+Embeddable Widget with registration from hosting page
+
+Multi Channel view in web app
+
+WhatsApp bridge!
+
+IRC Connector
+
+Email bridge, e.g. if no answer sent on support chat?
+
+
 Optional<T> and Jackson.. @see NewYo & JsonTest
 
 null argument checks.. needed EVEN IF Eclipse has null validation
