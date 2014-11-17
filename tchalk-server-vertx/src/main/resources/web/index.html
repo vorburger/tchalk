@@ -6,17 +6,15 @@
 </head>
 
 <script>
-
     var channel;
     var eb;
-
     $(function () {
         window.onhashchange = reset;
         $('#input').keydown(function (e) {
             if (e.keyCode === 13 && $(this).val()) {
                 var msg = { "text": $(this).val(), "channel": channel, "from": $("#name").val() }
                 console.log("Sending", msg);
-                eb.send('tchalk.server', msg);
+                eb.send('tchalk.server', { "command": "yo", "arg": msg });
                 $(this).val("");
             }
         });
@@ -38,18 +36,25 @@
 
             eb.registerHandler('tchalk.channel:' + channel, function (message) {
                 console.log('received a message: ', message);
-                var text = message.userPublicProfile.humanName + ": " + message.text;
-                addLine(text);
+                addLine(message);
             });
+
+            eb.send("tchalk.server", { "command": "history", "arg": { "channel": channel}},
+                    function(yos) {
+                        console.log(yos)
+                        $.each(yos.reverse(), function(key, yo) {
+                            addLine(yo);
+                        })
+                    });
         }
 
         $("#messages").empty();
         $("#input").focus();
     }
 
-    function addLine(messageText) {
-        // TODO THIS IS NOT SAFE! Needs escaping..
-        $('#messages').append($("<p>").text(messageText));
+    function addLine(message) {
+        var text = message.userPublicProfile.humanName + ": " + message.text;
+        $('#messages').append($("<p>").text(text));
         $('#messagePane')[0].scrollTop = $('#messagePane')[0].scrollHeight;
     }
 

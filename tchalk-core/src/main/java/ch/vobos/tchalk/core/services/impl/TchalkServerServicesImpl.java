@@ -1,5 +1,6 @@
 package ch.vobos.tchalk.core.services.impl;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -66,4 +67,8 @@ public class TchalkServerServicesImpl implements TchalkServerServices {
 		callback.accept(channel);
 	}
 
+    @Override
+    public void history(Channel channel, Consumer<List<Yo>> callback) {
+        yoBus.history(channel, 100, callback);
+    }
 }

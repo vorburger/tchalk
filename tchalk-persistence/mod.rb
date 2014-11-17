@@ -3,7 +3,7 @@ require 'vertx'
 
 # Redis helper
 def redis(command, args, &callback)
-  @eb.send 'tchak.redis', {'command' => command, 'args' => args } do |reply|
+  @eb.send 'tchalk.redis', {'command' => command, 'args' => args } do |reply|
     callback.call reply.body if callback
   end
 end
@@ -44,6 +44,10 @@ SOURCE='tchalk.yo.source'
   channel = msg.body['channel']
   limit = msg.body['limit'] || @v.config['channel.default.length'] || 100
   redis 'lrange', [ yoKey!(channel, msg), 0, limit] do |reply|
-    msg.reply reply
+    result = []
+    reply['value'].each do |x|
+      result.push JSON.parse x
+    end
+    msg.reply({ 'value' => result })
   end
 end

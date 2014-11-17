@@ -1,12 +1,10 @@
 package ch.vobos.tchalk.vertx;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import com.google.common.io.ByteStreams;
+import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.buffer.Buffer;
@@ -14,10 +12,15 @@ import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.sockjs.EventBusBridgeHook;
+import org.vertx.java.core.sockjs.SockJSSocket;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import com.google.common.io.ByteStreams;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WebServer {
 
@@ -38,7 +41,8 @@ public class WebServer {
                 if (req.method().equals("GET")) {
                     if (req.path().equals("/") || req.path().equals("")) {
                         req.response().setStatusCode(302);
-                        req.response().putHeader("Location", req.absoluteURI().toString().replaceAll("/$", "") + "/index.html");
+                        req.response().putHeader("Location",
+                                req.uri().toString().replaceAll("/$", "") + "/index.html");
                         req.response().end();
                         return;
                     }
@@ -73,12 +77,45 @@ public class WebServer {
                 }
             }
         });
-        // TODO review noPermitted to disallow clients posting broadcast Yo to bus themselves
-        vertx.createSockJSServer(server).bridge(config, noPermitted, noPermitted);
-        server.listen(8080);
 
-//        vertx.eventBus().registerHandler("tchalk.server", (Message<JsonObject> m) -> {
-//            vertx.eventBus().send("tchalk.channel:"+m.body().getString("channel"), m.body());
-//        });
+        // TODO review noPermitted to disallow clients posting broadcast Yo to bus themselves
+        vertx.createSockJSServer(server).bridge(config, noPermitted, noPermitted).setHook(new EventBusBridgeHook() {
+            @Override
+            public boolean handleSocketCreated(SockJSSocket sockJSSocket) {
+                return true;
+            }
+
+            @Override
+            public void handleSocketClosed(SockJSSocket sockJSSocket) {
+
+            }
+
+            @Override
+            public boolean handleSendOrPub(SockJSSocket sockJSSocket, boolean b, JsonObject jsonObject, String s) {
+                return true;
+            }
+
+            @Override
+            public boolean handlePreRegister(SockJSSocket sockJSSocket, String s) {
+                return true;
+            }
+
+            @Override
+            public void handlePostRegister(SockJSSocket sockJSSocket, String address) {
+                return;
+            }
+
+            @Override
+            public boolean handleUnregister(SockJSSocket sockJSSocket, String s) {
+                return true;
+            }
+
+            @Override
+            public boolean handleAuthorise(JsonObject jsonObject, String s, Handler<AsyncResult<Boolean>> asyncResultHandler) {
+                return true;
+            }
+        });
+
+        server.listen(8080);
     }
 }

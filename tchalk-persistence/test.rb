@@ -4,10 +4,10 @@ require 'vertx'
 @v.deploy_module 'ch.vobos.tchalk~tchalk-persistence~0.0.1',
                  { 'yo.expiration' => 10000,
                    'yo.max.length' => 500 }
-@v.set_timer 2000 do
+@v.set_timer 3000 do
   yo = {
       'channel' => 'hello',
-      'time' => Time.now
+      'timestamp' => Time.now
   }
   @eb.send 'tchalk.yo.sink', yo do |reply|
     puts reply.body

@@ -2,7 +2,9 @@ package ch.vobos.tchalk.core.tests;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
+import ch.vobos.tchalk.core.domain.simpletypes.Channel;
 import org.eclipse.jdt.annotation.NonNull;
 
 import ch.vobos.tchalk.core.services.EventBus;
@@ -23,8 +25,14 @@ public class TestEventBus<EventT> implements EventBus<EventT> {
 	}
     }
 
+    @Override
+    public void history(Channel channel, int limit, Consumer<List<EventT>> target) {
+
+    }
+
     public void addObserver(Observer<@NonNull EventT> observer) {
 	observers.add(observer);
     }
+
 
 }
