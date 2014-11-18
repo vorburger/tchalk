@@ -2,11 +2,14 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TCHALK.me - You tchalkin’ to me?</title>
+
     <script src="sockjs-0.3.4.min.js"></script>
     <script src='vertxbus-2.1.js'></script>
     <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-    <title>TCHALK.me - You tchalkin’ to me?</title>
-    
+    <script src="//cdn.auth0.com/js/lock-6.js"></script>
+     
     <style>
     body {
         font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
@@ -46,6 +49,29 @@
 
 <body>
 <script>
+$(document).ready(function() {
+    var lock = new Auth0Lock('85PkJYJxYaMoQLGToJiYkQggvXjCKJyg', 'tchalk1.auth0.com'); 
+    var userProfile;
+    $('.btn-login').click(function(e) {
+      e.preventDefault();
+      lock.showSignin(function(err, profile, token) {
+        if (err) {
+			showError("There was an error logging in: " + err);
+        } else {
+          localStorage.setItem('userToken', token);
+          userProfile = profile;
+          $('.login-box').hide();
+          $('.logged-in-box').show();
+          $('.nickname').text(profile.nickname);
+          $('.nickname').text(profile.name);
+          $('.avatar').attr('src', profile.picture);
+        }
+      });
+    });
+});
+
+	// TODO Laurent, should below be inside $(document).ready(function() as well??
+
     var channel;
     var eb;
     $(function () {
@@ -98,10 +124,27 @@
         $('#messagePane')[0].scrollTop = $('#messagePane')[0].scrollHeight;
     }
 
+    function showError(message) {
+	   // TODO use some pretty (but SMALL *.js!) "Toast" message fading overlay thingie..
+	   // à la http://sciactive.github.io/pnotify/ OR http://ned.im/noty/ OR http://www.jqueryrain.com/demo/jquery-notification-plugin/ etc.
+       console.log(message);
+       alert(message);
+    }
 </script>
 
 <h2 id="channel">...</h2>
-Name <input type="text" id="name">
+
+<div class="login-box">
+	<!-- Name <input type="text" id="name">  -->
+	<b><u> <!-- TODO Style this more nicely, instead of ugly <b><u> .. Bootstrap?-->
+		<a class="btn btn-primary btn-lg btn-login btn-block">Sign In...</a>
+	</u></b>
+</div>
+<div class="logged-in-box auth0-box logged-in" style="display: none;">
+	<img class="avatar" height="32" width="32"/> <!-- TODO How can this image size be made 'responsive' - adapting in function of screen DPI pixel density, instead of absolute px, which is very bad practice.. -->
+    <span class="nickname"></span>
+</div>
+
 <div id='messagePane'>
     <div id="messageContainer">
         <div id="messages"></div>
