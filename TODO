@@ -3,10 +3,6 @@ OAuth (Michael)
 
 UI (Laurent)
 
-build root pom.xml (Laurent?)
-incl. Vertx Maven plugin launcher.. 'mvn -o vertx:runMod' ? init? pullInDeps? (Michael?)
-incl. root README.txt set-up instructions
-
 PAAs, Travis
 
 ChatBot API (Michael)

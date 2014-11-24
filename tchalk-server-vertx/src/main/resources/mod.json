@@ -7,5 +7,7 @@
   "keywords": ["talk", "chat", "chitchat", "babil"],
   "homepage": "github, I think",
 
-  "auto-redeploy": true
+  "auto-redeploy": true,
+
+  "deploys": "ch.vobos.tchalk~tchalk-persistence~0.0.1"
 }
