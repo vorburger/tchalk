@@ -8,7 +8,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ConversionServiceImpl implements ConversionService, ConverterRegistry {
 
     @Override
-    public <InT, OutT> void register(Converter<InT, OutT> converter, Class<InT> inType, Class<OutT> outType) {
+    public <@NonNull InT, @NonNull OutT> void register(Converter<InT, OutT> converter, Class<InT> inType, Class<OutT> outType) {
 
     }
 

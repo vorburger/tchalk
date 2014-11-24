@@ -16,8 +16,6 @@ import ch.vobos.tchalk.core.domain.NewYo;
 import ch.vobos.tchalk.core.domain.simpletypes.Channel;
 import ch.vobos.tchalk.core.domain.simpletypes.Token;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class JsonTest {
 

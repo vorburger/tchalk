@@ -9,11 +9,10 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import ch.vobos.tchalk.core.services.EventBus;
 
-public class TestEventBus<EventT> implements EventBus<EventT> {
+public class TestEventBus<@NonNull EventT> implements EventBus<@NonNull EventT> {
 
     public interface Observer<EventT> {
-	// TODO This @SuppressWarnings is an Eclipse bug (I think)
-	void notify(@SuppressWarnings("null") EventT event);
+	void notify(EventT event);
     }
 
     private final List<Observer<EventT>> observers = new ArrayList<>();

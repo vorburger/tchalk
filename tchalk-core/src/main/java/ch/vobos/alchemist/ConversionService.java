@@ -4,7 +4,6 @@ import java.util.Optional;
 
 public interface ConversionService {
 
-    @SuppressWarnings("null")
     default <T> T convert(Object in, Class<T> outType) {
 	Optional<T> r = this.convertOptional(in, outType);
 	if (!r.isPresent())
