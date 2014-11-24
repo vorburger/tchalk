@@ -2,6 +2,7 @@ package ch.vobos.tchalk.vertx;
 
 import ch.vobos.tchalk.core.domain.Yo;
 import ch.vobos.tchalk.core.domain.simpletypes.Channel;
+
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
@@ -26,9 +27,14 @@ public class ServerVerticle extends Verticle {
 
         vertx.eventBus().registerHandler(TCHALK_SERVER, (Message<JsonObject> m) -> {
 
-            switch (m.body().getString("command")) {
+            final String cmd = m.body().getString("command");
+            if (cmd == null) {
+            	container.logger().error("Missing 'command' field: " + m.body().toString());
+            	return;
+            }
+            
+			switch (cmd) {
                 case "yo":
-
                     String arg = m.body().getObject("arg").encode();
                     // TODO distinguish say and invite messages
                     NewYo newYo = Json.decodeValue(arg, NewYo.class);
@@ -45,12 +51,16 @@ public class ServerVerticle extends Verticle {
                         m.fail(-123, errMsg);
                     }
                     break;
+                    
                 case "history":
                     tchalkServer.history(new Channel(m.body().getObject("arg").getString("channel")),
                             (List<Yo> list) -> {
                                 m.reply(new JsonArray(Json.encode(list)));
                             });
                     break;
+                    
+                default:
+                	container.logger().error("Unknown 'command' field: " + m.body().toString());
             }
 
         });
