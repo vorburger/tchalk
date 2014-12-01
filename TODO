@@ -1,4 +1,6 @@
 
+JSON conversion through ConversionService
+
 OAuth (Michael)
 
 UI (Laurent)
@@ -24,6 +26,7 @@ IRC Connector
 
 Email bridge, e.g. if no answer sent on support chat?
 
+https://code.google.com/p/wro4j/
 
 Optional<T> and Jackson.. @see NewYo & JsonTest
 

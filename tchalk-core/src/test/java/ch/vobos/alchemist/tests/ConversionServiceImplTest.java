@@ -10,7 +10,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Test;
 
 import ch.vobos.alchemist.ConversionService;
-import ch.vobos.alchemist.ConversionServiceImpl;
+import ch.vobos.alchemist.impl.ConversionServiceImpl;
 
 @SuppressWarnings("null")
 public class ConversionServiceImplTest {
@@ -21,7 +21,6 @@ public class ConversionServiceImplTest {
 	String s1 = "hello, world";
 	String s2 = cs.convert(s1, String.class);
 	assertTrue(s1 == s2);
-	// cs.register(converter, inType, outType)
     }
 
     @Test
