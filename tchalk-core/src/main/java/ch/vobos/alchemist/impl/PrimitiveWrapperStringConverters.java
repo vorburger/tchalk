@@ -1,5 +1,7 @@
 package ch.vobos.alchemist.impl;
 
+import javax.annotation.PostConstruct;
+
 import ch.vobos.alchemist.Parser;
 
 @SuppressWarnings("null")
@@ -20,7 +22,8 @@ public class PrimitiveWrapperStringConverters {
 	return Double::new;
     };
 
-    // TODO Later make this un-necessary and use an annotation on Parser above
+    // TODO Later make this un-necessary and use an annotation on Parser above, or (better) make Spring call @PostConstruct
+    @PostConstruct
     public void registerMeOn(ConverterRegistry registry) {
 	registry.registerParser(integerParser(), Integer.class);
 	registry.registerParser(doubleParser(), Double.class);

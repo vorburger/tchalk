@@ -17,10 +17,12 @@ public class ConversionServiceImpl implements ConversionService, ConverterRegist
     protected final Map<Class<?>, Map<Class<?>, Converter<?, ?>>> converters = new HashMap<Class<?>, Map<Class<?>, Converter<?, ?>>>();
 
     @Override
-    public <InT, OutT> void register(Converter<InT, OutT> converter, Class<InT> inType, Class<OutT> outType) {
+    public <InT, OutT> void register(Converter<InT, OutT> converter, Class<InT> inType, Class<OutT> outType) throws IllegalStateException {
 	Map<Class<?>, Converter<?, ?>> innerMap = converters.computeIfAbsent(inType, x -> {
 	    return new HashMap<Class<?>, Converter<?, ?>>();
 	});
+	if (innerMap.containsKey(outType))
+	    throw new IllegalStateException("Converter from " + inType.getClass() + " to " + outType.getClass() + " already registered");
 	innerMap.put(outType, converter);
     }
 
