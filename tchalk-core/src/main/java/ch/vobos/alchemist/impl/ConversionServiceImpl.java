@@ -9,6 +9,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import ch.vobos.alchemist.ConversionService;
 import ch.vobos.alchemist.Converter;
+import ch.vobos.alchemist.ConverterWithContext;
 
 public class ConversionServiceImpl implements ConversionService, ConverterRegistry {
 
@@ -29,7 +30,7 @@ public class ConversionServiceImpl implements ConversionService, ConverterRegist
     @Override
     @SuppressWarnings({ "null", "unused" })
     // TODO "unused" is wrong - Eclipse bug??
-    public <InT, OutT> Optional<OutT> convertOptional(InT in, Class<OutT> outType) {
+    public <InT, OutT, ContextT> Optional<OutT> convertToOptional(InT in, Class<OutT> outType, Optional<ContextT> context) {
 	if (outType.equals(in.getClass()))
 	    return optionalOf(in);
 
@@ -37,7 +38,14 @@ public class ConversionServiceImpl implements ConversionService, ConverterRegist
 	if (innerMap != null) {
 	    @SuppressWarnings("unchecked")
 	    Converter<InT, OutT> converter = (Converter<InT, OutT>) innerMap.get(outType);
-	    OutT out = converter.convert(in);
+	    OutT out;
+	    if (converter instanceof ConverterWithContext<?, ?, ?>) {
+		@SuppressWarnings("unchecked")
+		ConverterWithContext<InT, OutT, ContextT> converterWithContext = (ConverterWithContext<InT, OutT, ContextT>) converter;
+		out = converterWithContext.convert(in, context);
+	    } else {
+		out = converter.convert(in);
+	    }
 	    return optionalOf(out);
 	}
 

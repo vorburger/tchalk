@@ -33,7 +33,7 @@ public class ConversionServiceImplTest {
     @Test
     public void toStringNull() {
 	ConversionService cs = new ConversionServiceImpl();
-	Optional<String> o = cs.convertOptional(new Object() {
+	Optional<String> o = cs.convertToOptional(new Object() {
 	    @Override
 	    public @Nullable String toString() {
 		return null;
